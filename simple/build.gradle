@@ -1,7 +1,6 @@
 plugins {
     id 'java-library'
     id "maven-publish"
-    id "io.spring.dependency-management" version "1.0.8.RELEASE"
 }
 
 group 'org.example'
@@ -16,15 +15,11 @@ repositories {
 dependencies {
     api group: "org.apache.logging.log4j", name: "log4j-api"
     implementation group: "org.apache.logging.log4j", name: "log4j-slf4j-impl"
-}
 
-dependencyManagement {
-
-    dependencies {
         // We do this to lock versions for projects without a BOM
-        dependencySet (group: "org.apache.logging.log4j", version: "2.12.1") {
-            entry "log4j-api"
-            entry "log4j-slf4j-impl"
+    constraints {
+        ["log4j-api", "log4j-slf4j-impl"].each { entry ->
+            api group: "org.apache.logging.log4j", name: entry, version: "2.12.1"
         }
     }
 }
